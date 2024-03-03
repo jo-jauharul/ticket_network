@@ -9,30 +9,6 @@ include('connection.php');
 // }
 
 // Halaman Dashboard
-// echo "Selamat datang, " . $_SESSION['username'] . "!<br>";
-$sql_pending = "SELECT COUNT(*) AS total_pending FROM create_ticket WHERE status_ticket = 'pending'";
-$sql_open = "SELECT COUNT(*) AS total_open FROM create_ticket WHERE status_ticket = 'open'";
-$sql_solved = "SELECT COUNT(*) AS total_solved FROM create_ticket WHERE status_ticket = 'solved'";
-
-// Eksekusi query untuk masing-masing status
-$result_pending = $conn->query($sql_pending);
-$result_open = $conn->query($sql_open);
-$result_solved = $conn->query($sql_solved);
-
-// Ambil nilai total untuk masing-masing status
-$total_pending = $result_pending->fetch_assoc()['total_pending'];
-$total_open = $result_open->fetch_assoc()['total_open'];
-$total_solved = $result_solved->fetch_assoc()['total_solved'];
-
-
-
-$sql_status = "SELECT 
-                    SUM(CASE WHEN status_ticket = 'Pending' THEN 1 ELSE 0 END) AS pending_count,
-                    SUM(CASE WHEN status_ticket = 'Open' THEN 1 ELSE 0 END) AS open_count
-                FROM create_ticket";
-
-$result_status = $conn->query($sql_status);
-$status_data = $result_status->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -107,11 +83,19 @@ $status_data = $result_status->fetch_assoc();
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="createclient.php">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Tambah </span>
+                    <span>Create</span>
                 </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Create</h6>
+                        <a class="collapse-item" href="tambahan.php">Site</a>
+                        <a class="collapse-item" href="createclient.php">Client</a>
 
+                    </div>
+                </div>
+            </li>
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -338,78 +322,16 @@ $status_data = $result_status->fetch_assoc();
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="tambah_site.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Create Ticket</a>
-                        <a href="createclient.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Create </a>
+                        <h1 class="h3 mb-0 text-gray-800">Tambah site</h1>
                     </div>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Total Pending </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_pending; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Open Tiket</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" ><?php echo $total_open; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Solved tiket
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $total_solved; ?></div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <?php
+                    include('tambah_site.php');
+                    ?>
+                     <!--  -->
                          <!-- Footer -->
             <footer style="position: fixed; bottom: 0; width: 100%; background-color: #fff; text-align: center; padding: 10px 0;">
                 <div class="container my-auto">

@@ -1,28 +1,41 @@
 <?php
 include('connection.php')
 ?>
-    <div class="card">
+<div class="card">
 
-        <form action="insert_site.php" method="post">
+    <form action="insert_site.php" method="post">
 
-            <label for="client">Site:</label>
-            <input type="text" id="site" name="nama_site" placeholder="Enter site">
+        <label for="client">Site :</label>
+        <input type="text" id="site" name="nama_site" placeholder="Enter site">
 
-            <!-- <label for="address">Address</label>
-            <input type="text" id="address" name="address_client" placeholder="Enter team name">
+        <input type="submit" value="Submit" name="submit">
+    </form>
+</div>
+<script>
+    function confirmLogout() {
+        return confirm("Are you sure you want to log out?");
+    }
+  
+                        function previewImage() {
+                            var input = document.getElementById('gambarInput');
+                            var preview = document.getElementById('gambarPreview');
 
-            <label for="telp">Telpon</label>
-            <input type="text" id="telp" name="telp_client" placeholder="Enter team name"> -->
+                            input.addEventListener('change', function() {
+                                var file = this.files[0];
+                                var reader = new FileReader();
 
+                                reader.onload = function(event) {
+                                    preview.src = event.target.result;
+                                    preview.style.display = 'block';
+                                };
 
-            <input type="submit" value="Submit" name="submit">
-        </form>
-    </div>
-    <script>
-        function confirmLogout() {
-            return confirm("Are you sure you want to log out?");
-        }
-    </script>
+                                reader.readAsDataURL(file);
+                            });
+                        }
+
+                        previewImage();
+                    
+</script>
 </div>
 
 <style>

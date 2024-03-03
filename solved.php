@@ -78,10 +78,19 @@ $result = $conn->query($sql);
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="createclient.php">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Tambah Client</span>
+                    <span>Create</span>
                 </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Create</h6>
+                        <a class="collapse-item" href="tambahan.php">Site</a>
+                        <a class="collapse-item" href="createclient.php">Client</a>
+
+                    </div>
+                </div>
+            </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -336,6 +345,7 @@ $result = $conn->query($sql);
                                                 <thead>
                                                     <tr>
                                                         <th>Priority</th>
+                                                        <th>ID Tiket</th>
                                                         <th>Client</th>
                                                         <th>Shift</th>
                                                         <th>Problem</th>
@@ -366,6 +376,7 @@ $result = $conn->query($sql);
 
                                                             echo "<tr data-id='" . $row["id_tix"] . "'>";
                                                             echo "<td class='$priorityClass'>" . $row["priority"] . "</td>";
+                                                            echo "<td>" . $row["token"] . "</td>";
                                                             echo "<td>" . $row["nama_client"] . "</td>";
                                                             echo "<td>" . $row["shift"] . "</td>";
                                                             echo "<td class='problem'>" . $row["problem"] . "</td>";

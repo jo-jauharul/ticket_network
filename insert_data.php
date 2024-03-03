@@ -8,6 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $problem = $_POST['problem'];
     $priority = $_POST['priority'];
     $id_client = $_POST['id_client'];
+    $id_site = $_POST['id_site'];
+    $token = $_POST['token'];
 
     // Periksa apakah ada id_tix yang tersedia dalam tabel unused_ids
     $sql_get_unused_id = "SELECT id_tix FROM unused_ids LIMIT 1";
@@ -31,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Masukkan data tiket baru ke dalam tabel create_ticket
-    $sql_insert_ticket = "INSERT INTO create_ticket (id_tix, shift, problem, status_ticket, priority, id_client)
-    VALUES ('$id_tix', '$shift', '$problem', '$status_ticket','$priority', '$id_client')";
+    $sql_insert_ticket = "INSERT INTO create_ticket (id_tix, shift, problem, status_ticket, priority, id_client, id_site, token)
+    VALUES ('$id_tix', '$shift', '$problem', '$status_ticket','$priority', '$id_client', '$id_site', '$token')";
 
     
     if ($conn->query($sql_insert_ticket) === TRUE) {
