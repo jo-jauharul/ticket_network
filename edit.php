@@ -1,7 +1,6 @@
 <?php
 include('connection.php');
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Get the id from the URL parameter
     $id = $_GET['id'];
@@ -15,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $row = $result->fetch_assoc();
         // Output the form with pre-filled data
 ?>
-
         <div class="card">
             <form action="update.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?php echo $row['id_tix']; ?>">
@@ -34,48 +32,82 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <option value="high" <?php if ($row['priority'] == 'high') echo 'selected'; ?>>High</option>
                     <option value="medium" <?php if ($row['priority'] == 'medium') echo 'selected'; ?>>Medium</option>
                     <option value="low" <?php if ($row['priority'] == 'low') echo 'selected'; ?>>Low</option>
-                    <label for="gambar_client">Bukti client :</label>
-                    <input type="file" name="gambar_client" id="gambarInputClient" accept="image/*">
-                    <img id="gambarPreviewClient" src="path_to_your_image_folder/<?php echo $row['gambar_client']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
+                </select>
 
-                    <label for="gambar_vendor">Bukti vendor:</label>
-                    <input type="file" name="gambar_vendor" id="gambarInputVendor" accept="image/*">
-                    <img id="gambarPreviewVendor" src="path_to_your_image_folder/<?php echo $row['gambar_vendor']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
+                <label for="gambar_client">Bukti client :</label>
+                <textarea name="gambar_client" id="gambarTextareaClient" rows="5" cols="50"><?php echo $row['gambar_client']; ?></textarea>
+                <div id="gambarPreviewClient"></div>
+                <br>
 
-                    <label for="gambar_mikrotik">Bukti Mikrotik:</label>
-                    <input type="file" name="gambar_mikrotik" id="gambarInputMikrotik" accept="image/*">
-                    <img id="gambarPreviewMikrotik" src="path_to_your_image_folder/<?php echo $row['gambar_mikrotik']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
+                <label for="gambar_vendor">Bukti vendor:</label>
+                <textarea name="gambar_vendor" id="gambarTextareaVendor" rows="5" cols="50"><?php echo $row['gambar_vendor']; ?></textarea>
+                <div id="gambarPreviewVendor"></div>
+                <br>
 
-                    <input type="submit" value="Update">
+                <label for="gambar_mikrotik">Bukti Mikrotik:</label>
+                <textarea name="gambar_mikrotik" id="gambarTextareaMikrotik" rows="5" cols="50"><?php echo $row['gambar_mikrotik']; ?></textarea>
+                <div id="gambarPreviewMikrotik"></div>
+                <br>
 
-                    <script>
-                        function previewImage(inputId, previewId) {
-                            var input = document.getElementById(inputId);
-                            var preview = document.getElementById(previewId);
+                <input type="submit" value="Update">
 
-                            input.addEventListener('change', function() {
-                                var file = this.files[0];
-                                var reader = new FileReader();
+                <script>
+    function handlePaste(textareaId, previewId) {
+        var textarea = document.getElementById(textareaId);
+        var preview = document.getElementById(previewId);
 
-                                reader.onload = function(event) {
-                                    preview.src = event.target.result;
-                                    preview.style.display = 'block';
-                                };
+        textarea.addEventListener('paste', function(event) {
+            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            for (index in items) {
+                var item = items[index];
+                if (item.kind === 'file') {
+                    var blob = item.getAsFile();
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        var dataURL = event.target.result;
+                        // Menambahkan data URL gambar ke dalam textarea
+                        textarea.value += '\n' + dataURL;
+                        // Menampilkan preview gambar di bawah textarea
+                        var img = document.createElement('img');
+                        img.src = dataURL;
+                        preview.appendChild(img);
+                        // Menghapus URL gambar dari textarea setelah ditampilkan
+                        textarea.value = textarea.value.replace(dataURL, '');
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+    }
 
-                                reader.readAsDataURL(file);
-                            });
-                        }
+    // Panggil fungsi handlePaste untuk masing-masing textarea
+    handlePaste('gambarTextareaClient', 'gambarPreviewClient');
+    handlePaste('gambarTextareaVendor', 'gambarPreviewVendor');
+    handlePaste('gambarTextareaMikrotik', 'gambarPreviewMikrotik');
 
-                        previewImage('gambarInputClient', 'gambarPreviewClient');
-                        previewImage('gambarInputVendor', 'gambarPreviewVendor');
-                        previewImage('gambarInputMikrotik', 'gambarPreviewMikrotik');
-                    </script>
+    function preventDataURLPaste(textareaId) {
+        var textarea = document.getElementById(textareaId);
+        textarea.addEventListener('paste', function(event) {
+            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            for (var index in items) {
+                var item = items[index];
+                if (item.kind === 'file') {
+                    event.preventDefault(); // Mencegah data URL ditambahkan ke textarea
+                    return false;
+                }
+            }
+        });
+    }
+
+    // Panggil fungsi preventDataURLPaste untuk masing-masing textarea
+    preventDataURLPaste('gambarTextareaClient');
+    preventDataURLPaste('gambarTextareaVendor');
+    preventDataURLPaste('gambarTextareaMikrotik');
+</script>
 
 
             </form>
         </div>
-        </div>
-
 <?php
     } else {
         // Data not found, display error message
@@ -83,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
 ?>
-
 
 <style>
     .card {
