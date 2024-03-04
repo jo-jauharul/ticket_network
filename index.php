@@ -8,8 +8,10 @@ include('connection.php');
 //     exit;
 // }
 
-// Halaman Dashboard
+// // Halaman Dashboard
 // echo "Selamat datang, " . $_SESSION['username'] . "!<br>";
+
+
 $sql_pending = "SELECT COUNT(*) AS total_pending FROM create_ticket WHERE status_ticket = 'pending'";
 $sql_open = "SELECT COUNT(*) AS total_open FROM create_ticket WHERE status_ticket = 'open'";
 $sql_solved = "SELECT COUNT(*) AS total_solved FROM create_ticket WHERE status_ticket = 'solved'";
@@ -325,9 +327,9 @@ $status_data = $result_status->fetch_assoc();
 
 
                         <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
+                        <div class="card shadow mb-4" style="width: 1250px">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Data Ticket</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -402,6 +404,9 @@ $status_data = $result_status->fetch_assoc();
                                     <button style='background-color: #dc3545; color: #fff; border: none; padding: 5px; border-radius: 5px;'>
                                         <i class='fas fa-trash-alt'><a href='hapus.php? id=" . $row["id_tix"] . "' style='color: #ffff'> Delete </i>
                                     </button>
+                                    <button style='background-color: #4CAF50; color: #fff; border: none; padding: 5px; border-radius: 5px;'>
+                                       <i class=''><a href='edittiket.php?id=" . $row["id_tix"] . "' style='color: #ffff'> View </i>
+                                    </button>
                                   </td>";
                                                     echo "</tr>";
                                                 }
@@ -454,7 +459,7 @@ $status_data = $result_status->fetch_assoc();
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <a class="btn btn-primary" href="login.php">Logout</a>
                     </div>
                 </div>
             </div>

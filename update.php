@@ -13,14 +13,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $solved_at = ($status_ticket == 'Solved') ? date('Y-m-d H:i:s') : NULL;
 
     // Handle image upload
-    $gambar = $_FILES['gambar']['name'];
-    $gambar_tmp = $_FILES['gambar']['tmp_name'];
-    $gambar_path = 'uploads/' . $gambar;
+    $gambar_client = $_FILES['gambar_client']['name'];
+    $gambar_vendor = $_FILES['gambar_vendor']['name'];
+    $gambar_mikrotik = $_FILES['gambar_mikrotik']['name'];
 
-    move_uploaded_file($gambar_tmp, $gambar_path);
+    $gambar_client_tmp = $_FILES['gambar_client']['tmp_name'];
+    $gambar_vendor_tmp = $_FILES['gambar_vendor']['tmp_name'];
+    $gambar_mikrotik_tmp = $_FILES['gambar_mikrotik']['tmp_name'];
+
+    $gambar_client_path = 'uploads/' . $gambar_client;
+    $gambar_vendor_path = 'uploads/' . $gambar_vendor;
+    $gambar_mikrotik_path = 'uploads/' . $gambar_mikrotik;
+
+    // Pindahkan file gambar ke direktori yang ditentukan
+    move_uploaded_file($gambar_client_tmp, $gambar_client_path);
+    move_uploaded_file($gambar_vendor_tmp, $gambar_vendor_path);
+    move_uploaded_file($gambar_mikrotik_tmp, $gambar_mikrotik_path);
 
     // Update query
-    $query = "UPDATE create_ticket SET  shift = '$shift', problem = '$problem', status_ticket = '$status_ticket', solved_at = '$solved_at', priority = '$priority', gambar = '$gambar_path' WHERE id_tix = '$id'";
+    $query = "UPDATE create_ticket SET  shift = '$shift', problem = '$problem', status_ticket = '$status_ticket', solved_at = '$solved_at', priority = '$priority', gambar_client = '$gambar_client', gambar_vendor = '$gambar_vendor', gambar_mikrotik = '$gambar_mikrotik' WHERE id_tix = '$id'";
 
     if ($conn->query($query)) {
         // Redirect back to dashboard if update successful
@@ -30,3 +41,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Error updating record: " . $conn->error;
     }
 }
+?>

@@ -15,36 +15,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $row = $result->fetch_assoc();
         // Output the form with pre-filled data
 ?>
-       
-            <div class="card">
-                <form action="update.php" method="post">
-                    <input type="hidden" name="id" value="<?php echo $row['id_tix']; ?>">
-                    <label for="shift">Shift:</label>
-                    <input type="text" name="shift" value="<?php echo $row['shift']; ?>"><br>
-                    <label for="problem">Problem:</label>
-                    <input type="text" name="problem" value="<?php echo $row['problem']; ?>"><br>
-                    <label for="status_ticket">Status:</label>
-                    <select name="status_ticket">
-                        <option value="Solved" <?php if ($row['status_ticket'] == 'Solved') echo 'selected'; ?>>Solved</option>
-                        <option value="Pending" <?php if ($row['status_ticket'] == 'Pending') echo 'selected'; ?>>Pending</option>
-                        <option value="Open" <?php if ($row['status_ticket'] == 'Open') echo 'selected'; ?>>Open</option>
-                    </select><br>
-                    <label for="priority">Priority:</label>
-                    <select name="priority">
-                        <option value="high" <?php if ($row['priority'] == 'high') echo 'selected'; ?>>High</option>
-                        <option value="medium" <?php if ($row['priority'] == 'medium') echo 'selected'; ?>>Medium</option>
-                        <option value="low" <?php if ($row['priority'] == 'low') echo 'selected'; ?>>Low</option>
-                        <label for="gambar">Gambar:</label>
-                        <input type="file" name="gambar" id="gambarInput" accept="image/*">
-                        <img id="gambarPreview" src="path_to_your_image_folder/<?php echo $row['gambar']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
-                     
 
-                    </select><br>
+        <div class="card">
+            <form action="update.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?php echo $row['id_tix']; ?>">
+                <label for="shift">Shift:</label>
+                <input type="text" name="shift" value="<?php echo $row['shift']; ?>"><br>
+                <label for="problem">Problem:</label>
+                <input type="text" name="problem" value="<?php echo $row['problem']; ?>"><br>
+                <label for="status_ticket">Status:</label>
+                <select name="status_ticket">
+                    <option value="Solved" <?php if ($row['status_ticket'] == 'Solved') echo 'selected'; ?>>Solved</option>
+                    <option value="Pending" <?php if ($row['status_ticket'] == 'Pending') echo 'selected'; ?>>Pending</option>
+                    <option value="Open" <?php if ($row['status_ticket'] == 'Open') echo 'selected'; ?>>Open</option>
+                </select><br>
+                <label for="priority">Priority:</label>
+                <select name="priority">
+                    <option value="high" <?php if ($row['priority'] == 'high') echo 'selected'; ?>>High</option>
+                    <option value="medium" <?php if ($row['priority'] == 'medium') echo 'selected'; ?>>Medium</option>
+                    <option value="low" <?php if ($row['priority'] == 'low') echo 'selected'; ?>>Low</option>
+                    <label for="gambar_client">Bukti client :</label>
+                    <input type="file" name="gambar_client" id="gambarInputClient" accept="image/*">
+                    <img id="gambarPreviewClient" src="path_to_your_image_folder/<?php echo $row['gambar_client']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
+
+                    <label for="gambar_vendor">Bukti vendor:</label>
+                    <input type="file" name="gambar_vendor" id="gambarInputVendor" accept="image/*">
+                    <img id="gambarPreviewVendor" src="path_to_your_image_folder/<?php echo $row['gambar_vendor']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
+
+                    <label for="gambar_mikrotik">Bukti Mikrotik:</label>
+                    <input type="file" name="gambar_mikrotik" id="gambarInputMikrotik" accept="image/*">
+                    <img id="gambarPreviewMikrotik" src="path_to_your_image_folder/<?php echo $row['gambar_mikrotik']; ?>" style="display: none; max-width: 200px; max-height: 200px;">
+
                     <input type="submit" value="Update">
+
                     <script>
-                        function previewImage() {
-                            var input = document.getElementById('gambarInput');
-                            var preview = document.getElementById('gambarPreview');
+                        function previewImage(inputId, previewId) {
+                            var input = document.getElementById(inputId);
+                            var preview = document.getElementById(previewId);
 
                             input.addEventListener('change', function() {
                                 var file = this.files[0];
@@ -59,11 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             });
                         }
 
-                        previewImage();
+                        previewImage('gambarInputClient', 'gambarPreviewClient');
+                        previewImage('gambarInputVendor', 'gambarPreviewVendor');
+                        previewImage('gambarInputMikrotik', 'gambarPreviewMikrotik');
                     </script>
 
-                </form>
-            </div>
+
+            </form>
+        </div>
         </div>
 
 <?php
